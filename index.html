@@ -3,84 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>💗 Gecemin Kalbi 💗</title>
+  <title>💍 Benimle Evlenir misin?</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       height: 100vh;
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff1493);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #ffc0cb, #ff69b4);
+      font-family: 'Poppins', sans-serif;
       overflow: hidden;
-      font-family: sans-serif;
-    }
-    .heart {
-      width: 140px;
-      height: 140px;
-      background: #ff007f;
-      position: relative;
-      transform: rotate(-45deg);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .heart::before, .heart::after {
-      content: "";
-      width: 140px;
-      height: 140px;
-      background: #ff007f;
-      border-radius: 50%;
-      position: absolute;
-    }
-    .heart::before {
-      top: -70px;
-      left: 0;
-    }
-    .heart::after {
-      left: 70px;
-      top: 0;
-    }
-    .particle {
-      position: absolute;
-      font-size: 24px;
-      pointer-events: none;
-      animation: fly 1.2s ease-out forwards;
-    }
-    @keyframes fly {
-      0% { transform: translate(0,0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--x), var(--y)) scale(0.3); opacity: 0; }
+      color: white;
+      text-align: center;
     }
     h1 {
-      position: absolute;
-      top: 20px;
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px rgba(255,255,255,0.6);
+      margin-bottom: 40px;
+    }
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+    button {
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #yes {
+      background-color: #ff1493;
       color: white;
+      box-shadow: 0 0 15px #ff69b4;
+    }
+    #yes:hover {
+      background-color: #ff69b4;
+      transform: scale(1.1);
+    }
+    #no {
+      background-color: white;
+      color: #ff1493;
+      position: absolute;
+    }
+    .heart {
+      position: absolute;
       font-size: 24px;
-      text-shadow: 0 0 10px rgba(0,0,0,0.3);
+      animation: floatUp 3s ease-out forwards;
+      opacity: 0.8;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-500px) scale(0.5); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <h1>Seni Seviyorum 💖</h1>
-  <div class="heart" id="heart"></div>
+
+  <h1>💍 Benimle evlenir misin? 💖</h1>
+  <div class="buttons">
+    <button id="yes">Evet 💗</button>
+    <button id="no">Hayır 😅</button>
+  </div>
 
   <script>
-    const heart = document.getElementById('heart');
-    heart.addEventListener('click', (e) => {
-      for (let i = 0; i < 25; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.textContent = '💗';
-        document.body.appendChild(p);
-        const x = (Math.random() - 0.5) * 500;
-        const y = (Math.random() - 1) * 500;
-        p.style.setProperty('--x', x + 'px');
-        p.style.setProperty('--y', y + 'px');
-        p.style.left = e.clientX + 'px';
-        p.style.top = e.clientY + 'px';
-        setTimeout(() => p.remove(), 1200);
+    const noBtn = document.getElementById('no');
+    const yesBtn = document.getElementById('yes');
+
+    // Hayır butonuna fare gelince kaçar 😄
+    noBtn.addEventListener('mouseenter', () => {
+      const x = Math.random() * (window.innerWidth - noBtn.clientWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.clientHeight);
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
+    // Evet butonuna tıklayınca kalpler yağar 💗
+    yesBtn.addEventListener('click', () => {
+      for (let i = 0; i < 80; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.textContent = '💗';
+        document.body.appendChild(heart);
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.top = Math.random() * window.innerHeight + 'px';
+        heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+        setTimeout(() => heart.remove(), 3000);
       }
-      heart.style.transform = 'scale(0.8) rotate(-45deg)';
-      setTimeout(() => heart.style.transform = 'scale(1) rotate(-45deg)', 200);
+      yesBtn.textContent = "💞 Evet Dedin! Seni Seviyorum 💞";
     });
   </script>
 </body>
