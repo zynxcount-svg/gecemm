@@ -1,100 +1,351 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>💍 Benimle Evlenir misin?</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      height: 100vh;
-      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff1493);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Poppins', sans-serif;
-      overflow: hidden;
-      color: white;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.5rem;
-      text-shadow: 0 0 10px rgba(255,255,255,0.6);
-      margin-bottom: 40px;
-    }
-    .buttons {
-      display: flex;
-      gap: 20px;
-    }
-    button {
-      padding: 12px 30px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    #yes {
-      background-color: #ff1493;
-      color: white;
-      box-shadow: 0 0 15px #ff69b4;
-    }
-    #yes:hover {
-      background-color: #ff69b4;
-      transform: scale(1.1);
-    }
-    #no {
-      background-color: white;
-      color: #ff1493;
-      position: absolute;
-    }
-    .heart {
-      position: absolute;
-      font-size: 24px;
-      animation: floatUp 3s ease-out forwards;
-      opacity: 0.8;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-500px) scale(0.5); opacity: 0; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Benimle Evlenir Misin?</title>
+<style>
+  :root{
+    --pink1:#ffd1e6;
+    --pink2:#ff2fa8;
+    --white: #fff;
+  }
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg,var(--pink1) 0%, #ff9ad1 45%, var(--pink2) 100%);
+    overflow:hidden;
+  }
+
+  .card{
+    text-align:center;
+    color:#fff;
+    text-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    padding:24px;
+    width:100%;
+    max-width:820px;
+    box-sizing:border-box;
+  }
+
+  h1{
+    font-size: clamp(28px,7vw,56px);
+    margin:0 0 28px 0;
+    font-weight:800;
+    letter-spacing: -0.02em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+  }
+
+  .buttons{
+    display:flex;
+    gap:18px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  button{
+    border: none;
+    padding: 14px 34px;
+    border-radius: 999px;
+    font-size: clamp(14px,2.2vw,18px);
+    cursor:pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    transition: transform .15s ease, box-shadow .15s ease;
+    user-select:none;
+    -webkit-user-select:none;
+    position:relative;
+  }
+
+  #yes{
+    background: linear-gradient(180deg, #ffd7ec, #ff8ac8);
+    color: #80003a;
+    font-weight:700;
+  }
+  #yes:active{ transform: scale(.98); }
+
+  #no{
+    background: white;
+    color: #ff2fa8;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* small emoji spacing */
+  .emoji { font-size: 18px; }
+
+  /* Canvas overlay */
+  #tunnelOverlay{
+    position:fixed;
+    left:0;top:0;width:100%;height:100%;
+    pointer-events:none;
+    display:none;
+    z-index:2000;
+  }
+
+  /* center container slight lower to fit mobile status bars */
+  .card-wrap{ padding-top:40px; padding-bottom:40px; }
+
+  @media (max-width:420px){
+    h1{margin-bottom:18px;}
+    .card-wrap{ padding-top:20px; padding-bottom:80px; }
+  }
+</style>
 </head>
 <body>
-
-  <h1>💍 Benimle evlenir misin? 💖</h1>
-  <div class="buttons">
-    <button id="yes">Evet 💗</button>
-    <button id="no">Hayır 😅</button>
+  <div class="card">
+    <div class="card-wrap">
+      <h1>💍 <span style="white-space:nowrap">Benimle evlenir misin? 💖</span></h1>
+      <div class="buttons">
+        <button id="yes">Evet <span class="emoji">💞</span></button>
+        <button id="no">Hayır <span class="emoji">😅</span></button>
+      </div>
+    </div>
   </div>
 
-  <script>
-    const noBtn = document.getElementById('no');
-    const yesBtn = document.getElementById('yes');
+  <canvas id="tunnelOverlay"></canvas>
 
-    // Hayır butonuna fare gelince kaçar 😄
-    noBtn.addEventListener('mouseenter', () => {
-      const x = Math.random() * (window.innerWidth - noBtn.clientWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.clientHeight);
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-    });
+<script>
+/* ---------------------------
+ Hayır butonu: kaçma davranışı
+ ---------------------------*/
+(function(){
+  const no = document.getElementById('no');
+  const body = document.body;
+  function randomPos(btn){
+    const pad = 14;
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const rect = btn.getBoundingClientRect();
+    const btnW = rect.width;
+    const btnH = rect.height;
 
-    // Evet butonuna tıklayınca kalpler yağar 💗
-    yesBtn.addEventListener('click', () => {
-      for (let i = 0; i < 80; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.textContent = '💗';
-        document.body.appendChild(heart);
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.top = Math.random() * window.innerHeight + 'px';
-        heart.style.fontSize = Math.random() * 30 + 20 + 'px';
-        setTimeout(() => heart.remove(), 3000);
+    // Yeni x,y taşınacak konteyner aralığı (merkezi area yerine tüm görünür alan)
+    const maxX = vw - btnW - pad;
+    const maxY = vh - btnH - pad;
+
+    const x = Math.floor(Math.random() * (maxX - pad)) + pad;
+    const y = Math.floor(Math.random() * (maxY - pad)) + pad;
+
+    return {x,y};
+  }
+
+  function moveButtonRandomly(){
+    const pos = randomPos(no);
+    no.style.transform = `translate(${pos.x - no.getBoundingClientRect().left + window.scrollX}px, ${pos.y - no.getBoundingClientRect().top + window.scrollY}px)`;
+    // küçük jitter dönüşümler
+    no.style.transition = 'transform 260ms cubic-bezier(.2,.9,.3,1)';
+  }
+
+  // Fare ile üstüne gelince kaçsın
+  no.addEventListener('mouseenter', moveButtonRandomly);
+  // dokunmatik cihazlarda da dokununca kaçsın
+  no.addEventListener('touchstart', function(e){
+    e.preventDefault();
+    moveButtonRandomly();
+  }, {passive:false});
+
+  // Ayrıca tıklamayı yumuşatmak: normal tıklansa bile geçici mesaj göster
+  no.addEventListener('click', function(e){
+    e.preventDefault();
+    // küçük şaka: bir kere de olsa "hayır" kabul et
+    no.innerHTML = 'Hımm... Belki değil <span class="emoji">😅</span>';
+    setTimeout(()=> no.innerHTML = 'Hayır <span class="emoji">😅</span>', 1200);
+  });
+})();
+
+/* ---------------------------
+ "Evet" -> Kalp tüneli animasyonu
+ Canvas tabanlı sonsuz efekt
+ ---------------------------*/
+(function(){
+  const yes = document.getElementById('yes');
+  const canvas = document.getElementById('tunnelOverlay');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  let W = 0, H = 0, cx = 0, cy = 0, raf;
+  let hearts = [];
+  const HEART_COUNT = 90; // arttır azalt efekt yoğunluğu
+  let running = false;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    canvas.style.display = running ? 'block' : 'none';
+    cx = W/2; cy = H/2;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // kalp çizen path (boyutsuz, merkez (0,0), size 1)
+  function heartPath(ctx, size){
+    const s = size;
+    ctx.beginPath();
+    ctx.moveTo(0, -0.35 * s);
+    ctx.bezierCurveTo(0.35*s, -0.85*s, 1.1*s, -0.45*s, 0, 0.45*s);
+    ctx.bezierCurveTo(-1.1*s, -0.45*s, -0.35*s, -0.85*s, 0, -0.35*s);
+    ctx.closePath();
+  }
+
+  function randRange(a,b){ return a + Math.random()*(b-a); }
+
+  function spawnOne(i){
+    // x,y küçük sapma civarı (tünel merkezine göre)
+    const spread = Math.min(W,H) * 0.18;
+    const p = {
+      x: randRange(-spread, spread),
+      y: randRange(-spread, spread),
+      z: randRange(0.02, 1.0),
+      speed: randRange(0.004, 0.018),
+      hue: randRange(320,340), // pembe tonları
+      baseSize: randRange(8,18) // temel boyut
+    };
+    hearts[i] = p;
+  }
+
+  for(let i=0;i<HEART_COUNT;i++) spawnOne(i);
+
+  function resetHeart(i){
+    hearts[i].x = randRange(-W*0.12, W*0.12);
+    hearts[i].y = randRange(-H*0.12, H*0.12);
+    hearts[i].z = 1.0 + Math.random()*0.8;
+    hearts[i].speed = randRange(0.006, 0.02);
+    hearts[i].baseSize = randRange(6,20);
+  }
+
+  function drawGlowHeart(x,y,size,alpha,hue){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.globalAlpha = alpha * 0.95;
+    ctx.shadowBlur = Math.min(80, size*1.6);
+    ctx.shadowColor = `hsla(${hue},95%,60%,${Math.min(0.9, alpha)})`;
+    ctx.fillStyle = `hsla(${hue},95%,65%,${Math.min(1, alpha)})`;
+    heartPath(ctx, size);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    // ambient glow background fuzzy ring for depth
+    ctx.save();
+    const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*0.7);
+    grad.addColorStop(0, 'rgba(255,200,240,0.06)');
+    grad.addColorStop(0.6, 'rgba(255,130,200,0.03)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+    ctx.restore();
+
+    // draw hearts sorted by z (far first)
+    hearts.sort((a,b)=> b.z - a.z);
+
+    for(let i=0;i<hearts.length;i++){
+      const p = hearts[i];
+      // move forward (toward viewer)
+      p.z -= p.speed;
+      // perspective projection: scale grows as z -> 0
+      const perspective = 1 / Math.max(0.03, p.z); // smaller z -> bigger
+      const x = cx + p.x * perspective;
+      const y = cy + p.y * perspective;
+      const size = p.baseSize * perspective * 0.9;
+      // opacity stronger when close
+      let alpha = Math.max(0, Math.min(1, 1.5 - p.z));
+      // draw a few layered glows for neon/tunnel impression
+      drawGlowHeart(x, y, size*1.6, alpha*0.12, p.hue);
+      drawGlowHeart(x, y, size*1.1, alpha*0.28, p.hue);
+      drawGlowHeart(x, y, size, alpha, p.hue);
+
+      // tiny sparkle particles trailing
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = `rgba(255,255,255,${alpha*0.06})`;
+      ctx.beginPath();
+      ctx.arc(x + Math.sin(p.z*40+i)*6, y + Math.cos(p.z*30+i)*6, Math.max(0.6, size*0.03), 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+
+      // reset when passed viewer
+      if(p.z <= 0.03){
+        // recycle; some will come closer to center for tunnel look
+        p.x = randRange(-W*0.04, W*0.04);
+        p.y = randRange(-H*0.04, H*0.04);
+        p.z = randRange(0.6, 1.4);
+        p.speed = randRange(0.006, 0.02);
+        p.baseSize = randRange(6,18);
       }
-      yesBtn.textContent = "💞 Evet Dedin! Seni Seviyorum 💞";
-    });
-  </script>
+    }
+
+    // center big repeating hearts (gives tunnel rings)
+    for(let ring=0; ring<6; ring++){
+      const z = 0.08 + ring*0.15 - ((performance.now()%2000)/2000)*0.15;
+      const perspective = 1 / Math.max(0.03, z);
+      const size = 40 * perspective;
+      const alpha = Math.max(0, Math.min(0.6, 0.8 - z*0.9));
+      drawGlowHeart(cx, cy, size*1.4, alpha*0.35, 330);
+      drawGlowHeart(cx, cy, size*0.9, alpha*0.6, 320);
+    }
+
+    raf = requestAnimationFrame(frame);
+  }
+
+  function startTunnel(){
+    if(running) return;
+    running = true;
+    canvas.style.display = 'block';
+    canvas.style.pointerEvents = 'none';
+    resize();
+    // set composite to lighter for glow blending
+    ctx.globalCompositeOperation = 'lighter';
+    if(raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(frame);
+  }
+
+  function stopTunnel(){
+    running = false;
+    canvas.style.display = 'none';
+    if(raf) cancelAnimationFrame(raf);
+  }
+
+  yes.addEventListener('click', function(){
+    startTunnel();
+
+    // küçük tebrik animasyonu: metin değişimi ve butonlar gizle
+    document.querySelector('.card-wrap').style.transition = 'opacity .6s ease';
+    document.querySelector('.card-wrap').style.opacity = '0.08';
+
+    // ek küçük popup - "Evet!" yazısı ekrana
+    const popup = document.createElement('div');
+    popup.style.position = 'fixed';
+    popup.style.left = '50%';
+    popup.style.top = '50%';
+    popup.style.transform = 'translate(-50%,-50%) scale(.8)';
+    popup.style.zIndex = 3000;
+    popup.style.color = '#fff';
+    popup.style.textAlign = 'center';
+    popup.style.fontWeight = 900;
+    popup.style.textShadow = '0 10px 40px rgba(0,0,0,0.35)';
+    popup.style.fontSize = 'clamp(20px,6vw,54px)';
+    popup.innerHTML = 'Evet! 💖';
+    popup.style.pointerEvents = 'none';
+    document.body.appendChild(popup);
+
+    // hafif popup zoom
+    setTimeout(()=> popup.style.transform = 'translate(-50%,-50%) scale(1)', 60);
+    // popup birkaç saniye sonra kalır; istersen otomatik silinebilir
+  });
+
+  // sayfa gizleme/geri getirme durumlarına duyarlı ol
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden) { if(raf) cancelAnimationFrame(raf); }
+    else if(running) raf = requestAnimationFrame(frame);
+  });
+})();
+</script>
 </body>
 </html>
