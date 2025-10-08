@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>❤️ gecemm ❤️</title>
+  <style>
+    body {
+      background-color: #0b0b0b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .heart {
+      width: 120px;
+      height: 120px;
+      background-color: red;
+      position: relative;
+      transform: rotate(-45deg);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 120px;
+      height: 120px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+    .heart::before {
+      top: -60px;
+      left: 0;
+    }
+    .heart::after {
+      left: 60px;
+      top: 0;
+    }
+    .small-heart {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      animation: fly 1.2s ease-out forwards;
+    }
+    @keyframes fly {
+      0% {transform: translate(0, 0) scale(1); opacity: 1;}
+      100% {transform: translate(var(--x), var(--y)) scale(0.2); opacity: 0;}
+    }
+    h2 {
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="heart" id="heart"></div>
+  <h2>❤️ Gecemin Kalbi ❤️</h2>
+
+  <script>
+    const heart = document.getElementById('heart');
+
+    heart.addEventListener('click', () => {
+      for (let i = 0; i < 15; i++) {
+        const small = document.createElement('div');
+        small.classList.add('small-heart');
+        small.textContent = '💖';
+        small.style.left = heart.offsetLeft + 60 + 'px';
+        small.style.top = heart.offsetTop + 60 + 'px';
+        small.style.setProperty('--x', `${(Math.random() - 0.5) * 300}px`);
+        small.style.setProperty('--y', `${(Math.random() - 1) * 300}px`);
+        document.body.appendChild(small);
+        setTimeout(() => small.remove(), 1200);
+      }
+      heart.style.transform = 'scale(0.9) rotate(-45deg)';
+      setTimeout(() => heart.style.transform = 'scale(1) rotate(-45deg)', 200);
+    });
+  </script>
+</body>
+</html>
