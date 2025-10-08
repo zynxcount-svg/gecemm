@@ -3,80 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>❤️ gecemm ❤️</title>
+  <title>💗 Gecemin Kalbi 💗</title>
   <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background-color: #0b0b0b;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: linear-gradient(135deg, #ffc0cb, #ff69b4);
       overflow: hidden;
-      flex-direction: column;
+      font-family: sans-serif;
     }
     .heart {
-      width: 120px;
-      height: 120px;
-      background-color: red;
+      width: 140px;
+      height: 140px;
+      background: #ff007f;
       position: relative;
       transform: rotate(-45deg);
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: transform 0.2s ease;
     }
-    .heart::before,
-    .heart::after {
+    .heart::before, .heart::after {
       content: "";
-      width: 120px;
-      height: 120px;
-      background-color: red;
+      width: 140px;
+      height: 140px;
+      background: #ff007f;
       border-radius: 50%;
       position: absolute;
     }
     .heart::before {
-      top: -60px;
+      top: -70px;
       left: 0;
     }
     .heart::after {
-      left: 60px;
+      left: 70px;
       top: 0;
     }
-    .small-heart {
+    .particle {
       position: absolute;
-      font-size: 20px;
-      opacity: 0;
+      font-size: 24px;
+      pointer-events: none;
       animation: fly 1.2s ease-out forwards;
     }
     @keyframes fly {
-      0% {transform: translate(0, 0) scale(1); opacity: 1;}
-      100% {transform: translate(var(--x), var(--y)) scale(0.2); opacity: 0;}
+      0% { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) scale(0.3); opacity: 0; }
     }
-    h2 {
+    h1 {
+      position: absolute;
+      top: 20px;
       color: white;
-      font-family: 'Poppins', sans-serif;
-      margin-top: 20px;
+      font-size: 24px;
+      text-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
+  <h1>Seni Seviyorum 💖</h1>
   <div class="heart" id="heart"></div>
-  <h2>❤️ Gecemin Kalbi ❤️</h2>
 
   <script>
     const heart = document.getElementById('heart');
-
-    heart.addEventListener('click', () => {
-      for (let i = 0; i < 15; i++) {
-        const small = document.createElement('div');
-        small.classList.add('small-heart');
-        small.textContent = '💖';
-        small.style.left = heart.offsetLeft + 60 + 'px';
-        small.style.top = heart.offsetTop + 60 + 'px';
-        small.style.setProperty('--x', `${(Math.random() - 0.5) * 300}px`);
-        small.style.setProperty('--y', `${(Math.random() - 1) * 300}px`);
-        document.body.appendChild(small);
-        setTimeout(() => small.remove(), 1200);
+    heart.addEventListener('click', (e) => {
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.textContent = '💗';
+        document.body.appendChild(p);
+        const x = (Math.random() - 0.5) * 500;
+        const y = (Math.random() - 1) * 500;
+        p.style.setProperty('--x', x + 'px');
+        p.style.setProperty('--y', y + 'px');
+        p.style.left = e.clientX + 'px';
+        p.style.top = e.clientY + 'px';
+        setTimeout(() => p.remove(), 1200);
       }
-      heart.style.transform = 'scale(0.9) rotate(-45deg)';
+      heart.style.transform = 'scale(0.8) rotate(-45deg)';
       setTimeout(() => heart.style.transform = 'scale(1) rotate(-45deg)', 200);
     });
   </script>
