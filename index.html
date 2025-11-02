@@ -1,181 +1,377 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Zynx Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Font + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+    :root{
+      --bg-1:#060608;
+      --panel:#0f1114;
+      --muted:#bfc6d1;
+      --accent:#7b61ff;
+      --accent-2:#3be7c8;
+      --glass:rgba(255,255,255,0.03);
+      --card-border:rgba(123,97,255,0.12);
+      --radius:14px;
     }
-    body {
-      background: radial-gradient(circle at top, #0b0b0f, #000);
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-    }
-    header {
-      text-align: center;
-      margin-top: 60px;
-    }
-    header h1 {
-      font-size: 2.8rem;
-      color: #8f73ff;
-      letter-spacing: 1px;
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #8f73ff, 0 0 15px #8f73ff; }
-      to { text-shadow: 0 0 20px #8f73ff, 0 0 40px #6c4fff; }
-    }
-    header p {
-      margin-top: 10px;
-      color: #ccc;
-      font-size: 1.1rem;
-    }
-    .container {
-      margin-top: 60px;
-      width: 90%;
-      max-width: 1200px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      justify-items: center;
-    }
-    .card {
-      background: rgba(20,20,30,0.8);
-      border: 1px solid rgba(140,140,255,0.2);
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
-      transition: 0.3s;
-      backdrop-filter: blur(8px);
-    }
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: #8f73ff;
-      box-shadow: 0 0 15px #6c4fff33;
-    }
-    .card i {
-      font-size: 2.5rem;
-      color: #8f73ff;
-      margin-bottom: 15px;
-    }
-    .card h3 {
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-      color: #fff;
-    }
-    .card p {
-      font-size: 0.95rem;
-      color: #aaa;
-    }
-    footer {
-      margin-top: auto;
-      padding: 30px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #666;
-    }
-    footer a {
-      color: #8f73ff;
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 1.2rem;
-      transition: color 0.3s;
-    }
-    footer a:hover {
-      color: #fff;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.06), transparent),
+                  linear-gradient(180deg,var(--bg-1), #020203 120%);
+      color:var(--muted);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      overflow-x:hidden;
+      padding-bottom:40px;
     }
 
-    /* Matrix Particle Effect */
-    #particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
+    /* Header */
+    header{
+      text-align:center;
+      padding:48px 20px 10px;
     }
-    .particle {
-      position: absolute;
-      background: #8f73ff55;
-      border-radius: 50%;
-      animation: float 8s infinite ease-in-out;
+    .brand {
+      display:inline-flex;
+      gap:14px;
+      align-items:center;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      padding:10px 18px;
+      border-radius:999px;
+      box-shadow:0 6px 30px rgba(11,11,15,0.4);
+      border:1px solid rgba(255,255,255,0.02);
     }
-    @keyframes float {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-120vh) scale(0.2); opacity: 0; }
+    .logo {
+      width:48px;height:48px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent), #5ec3ff 80%);
+      display:flex;align-items:center;justify-content:center;
+      color:white;font-weight:700;font-size:18px;
+      box-shadow:0 6px 18px rgba(123,97,255,0.22);
     }
+    h1{font-size:1.6rem;margin-left:6px;color:#fff}
+    .slogan{margin-top:8px;color:#aeb6c3;font-size:0.95rem}
+
+    /* Layout */
+    main{width:94%;max-width:1200px;margin:34px auto;flex:1}
+    .controls{
+      display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .search {
+      display:flex;gap:10px;align-items:center;
+      background:var(--glass);padding:10px;border-radius:999px;border:1px solid rgba(255,255,255,0.02);
+      min-width:240px;flex:1;
+    }
+    .search input{
+      background:transparent;border:0;outline:none;color:var(--muted);
+      font-size:0.95rem;
+    }
+    .filters{display:flex;gap:8px;align-items:center}
+    .chip{
+      padding:8px 12px;border-radius:999px;font-size:0.85rem;border:1px solid var(--card-border);
+      cursor:pointer;background:transparent;color:var(--muted)
+    }
+    .chip.active{background:linear-gradient(90deg, rgba(123,97,255,0.16), rgba(59,231,200,0.06));border-color:rgba(123,97,255,0.22);color:#fff}
+
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+      gap:18px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:18px;
+      min-height:150px;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s;
+      border:1px solid var(--card-border);
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .card:hover{transform:translateY(-8px);box-shadow:0 18px 50px rgba(2,2,4,0.5);border-color:rgba(123,97,255,0.28)}
+    .card .icon{
+      width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:22px;color:white;background:linear-gradient(135deg,var(--accent), #4fb0ff);
+      box-shadow:0 8px 26px rgba(75,0,255,0.12);
+    }
+    .card h3{margin:0;color:#fff;font-size:1.05rem}
+    .card p{margin:0;font-size:0.9rem;color:#aab3bd;flex:1}
+    .card .meta{display:flex;gap:8px;align-items:center;margin-top:10px;justify-content:space-between}
+    .btn {
+      padding:8px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:600;background:transparent;color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent), #5ec3ff);
+      color:#08101a;border:0;
+    }
+
+    /* Footer */
+    footer{padding:24px 16px;text-align:center;color:#8d96a3;font-size:0.9rem;margin-top:30px}
+
+    /* Modal / Popup */
+    .modal-backdrop{
+      position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.75));
+      display:flex;align-items:center;justify-content:center;padding:20px;z-index:1200;opacity:0;pointer-events:none;
+      transition:opacity .22s;
+    }
+    .modal-backdrop.show{opacity:1;pointer-events:auto}
+    .modal {
+      width:100%;max-width:920px;border-radius:16px;background:linear-gradient(180deg,#0b0d10, #0a0b0f);
+      padding:22px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 40px 120px rgba(2,2,6,0.8);
+      transform:translateY(18px);transition:transform .26s ease, opacity .2s;
+      opacity:0;
+    }
+    .modal-backdrop.show .modal{transform:none;opacity:1}
+    .modal-grid{display:grid;grid-template-columns: 280px 1fr;gap:18px;align-items:start}
+    .modal .big-icon{width:100%;height:280px;border-radius:12px;background:linear-gradient(135deg,var(--accent), #4fb0ff);display:flex;align-items:center;justify-content:center;font-size:36px;color:#051017}
+    .modal h2{margin:0;color:#fff}
+    .meta-row{display:flex;gap:12px;margin-top:8px;color:#9aa3ad;font-size:0.9rem}
+    .modal p{color:#c7cfd6;line-height:1.45;margin-top:14px}
+    .modal .actions{display:flex;gap:10px;margin-top:18px;align-items:center}
+    .outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:10px 12px;border-radius:10px}
+    .buy-btn{padding:12px 14px;border-radius:12px;border:0;font-weight:700;background:linear-gradient(90deg,var(--accent), var(--accent-2));color:#041018;cursor:pointer}
+
+    /* small screens */
+    @media (max-width:720px){
+      .modal-grid{grid-template-columns:1fr;align-items:stretch}
+      .modal .big-icon{height:160px}
+      header{padding-top:30px}
+      .brand{padding:8px 12px}
+    }
+
+    /* subtle animate in */
+    .fade-in{animation:fadeInUp .5s both}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   </style>
 </head>
 <body>
-  <div id="particles"></div>
   <header>
-    <h1>Zynx Shop</h1>
-    <p>Sanal dünyanın her şeyi burada.</p>
+    <div class="brand fade-in" role="banner" aria-label="Zynx Shop">
+      <div class="logo">Z<span style="opacity:.8">Y</span></div>
+      <div>
+        <h1>Zynx Shop</h1>
+        <div class="slogan">Sanal dünyanın her şeyi burada.</div>
+      </div>
+    </div>
   </header>
 
-  <section class="container">
-    <div class="card">
-      <i class="fa-solid fa-microchip"></i>
-      <h3>Sanal Kartlar</h3>
-      <p>Dijital alışveriş kartları, güvenli ve hızlı erişim.</p>
+  <main>
+    <div class="controls fade-in">
+      <div class="search" aria-hidden="false">
+        <i class="fa-solid fa-magnifying-glass" style="opacity:.7"></i>
+        <input id="search" placeholder="Ürün ara (örn: proxy, api, bot)..." aria-label="Ürün ara"/>
+      </div>
+      <div class="filters" role="toolbar" aria-label="Filtreler">
+        <div class="chip active" data-filter="all">Hepsi</div>
+        <div class="chip" data-filter="kart">Sanal Kart</div>
+        <div class="chip" data-filter="api">API</div>
+        <div class="chip" data-filter="bot">Bot</div>
+        <div class="chip" data-filter="tool">Tool</div>
+        <div class="chip" data-filter="panel">Panel</div>
+      </div>
     </div>
-    <div class="card">
-      <i class="fa-solid fa-code"></i>
-      <h3>Scriptler</h3>
-      <p>Otomasyon ve sistem scriptleriyle hız kazanın.</p>
-    </div>
-    <div class="card">
-      <i class="fa-solid fa-network-wired"></i>
-      <h3>API Servisleri</h3>
-      <p>Projelerinize entegre edebileceğiniz güçlü API çözümleri.</p>
-    </div>
-    <div class="card">
-      <i class="fa-solid fa-robot"></i>
-      <h3>Botlar</h3>
-      <p>Gelişmiş otomatik işlemler ve görev yöneticileri.</p>
-    </div>
-    <div class="card">
-      <i class="fa-solid fa-toolbox"></i>
-      <h3>Toollar</h3>
-      <p>Sanal sisteminizi güçlendirecek araç koleksiyonu.</p>
-    </div>
-  </section>
+
+    <section class="grid" id="productGrid" aria-live="polite">
+      <!-- Cards will be injected here -->
+    </section>
+  </main>
 
   <footer>
-    <p>© 2025 Zynx Shop | Developed by Zynx</p>
-    <div>
-      <a href="#"><i class="fa-brands fa-discord"></i></a>
-      <a href="#"><i class="fa-brands fa-github"></i></a>
-      <a href="#"><i class="fa-brands fa-telegram"></i></a>
-    </div>
+    © 2025 Zynx Shop • Sanal işlemler koleksiyonu • <span style="color:var(--accent)">Gizlilik önemli</span>
   </footer>
 
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal fade-in" role="document">
+      <div class="modal-grid">
+        <div>
+          <div class="big-icon" id="modalIcon"><i class="fa-solid fa-box-open" style="font-size:38px"></i></div>
+        </div>
+        <div>
+          <h2 id="modalTitle">Ürün Başlığı</h2>
+          <div class="meta-row" id="modalMeta">
+            <div id="modalCategory">Kategori</div>
+            <div id="modalPrice">Fiyat: Ücretsiz</div>
+            <div id="modalType">Tip: Dijital</div>
+          </div>
+          <p id="modalDesc">Ürün açıklaması buraya gelecek. Kısa, net, faydası ve kullanım şekli yazılır.</p>
+
+          <div class="actions">
+            <button class="buy-btn" id="buyBtn"><i class="fa-solid fa-cart-shopping" style="margin-right:8px"></i>Satın Al / İndir</button>
+            <button class="outline" id="copyBtn"><i class="fa-regular fa-copy" style="margin-right:8px"></i>Linki Kopyala</button>
+            <button class="outline" id="closeBtn" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div style="margin-top:12px;color:#93a0ab;font-size:0.9rem">Güvenlik notu: Bu bir demo katalogtur — gerçek işlemler için ilgili kanal ve açıklamayı kullanın.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Basit particle efekti
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 50; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('particle');
-      const size = Math.random() * 6 + 2;
-      dot.style.width = `${size}px`;
-      dot.style.height = `${size}px`;
-      dot.style.left = `${Math.random() * 100}%`;
-      dot.style.top = `${Math.random() * 100}%`;
-      dot.style.animationDuration = `${5 + Math.random() * 5}s`;
-      container.appendChild(dot);
+    /* Product data - 12+ sanal ürün */
+    const products = [
+      { id: 'p1', title:'Sanal Kart - FastPay', category:'kart', price:'₺29', desc:'Anında oluşturulan tek kullanımlık sanal kart. Online ödemelerde hızlı ve gizli.', icon:'fa-credit-card' , link:'#' },
+      { id: 'p2', title:'Proxy Pool 500', category:'tool', price:'₺49', desc:'Güncel rotasyonlu proxy havuzu (500 IP). Yüksek hız & düşük gecikme.', icon:'fa-sitemap', link:'#' },
+      { id: 'p3', title:'SMS Verify API', category:'api', price:'₺39', desc:'Telefon doğrulama API\'si — global operatörlerle uyumlu, kolay entegrasyon.', icon:'fa-sms', link:'#' },
+      { id: 'p4', title:'Bot Framework v2', category:'bot', price:'₺59', desc:'Özelleştirilebilir otomasyon bot çatısı — webhook, scheduler, yönetim paneli.', icon:'fa-robot', link:'#' },
+      { id: 'p5', title:'VPN Panel - ZynxVPN', category:'panel', price:'₺99', desc:'Kendi VPN sunucunuzu yönetebileceğiniz kontrol paneli + kullanıcı yönetimi.', icon:'fa-shield-halved', link:'#' },
+      { id: 'p6', title:'API Key Generator', category:'tool', price:'Ücretsiz', desc:'Hızlı ve güvenli API key üretici (JWT desteği).', icon:'fa-key', link:'#' },
+      { id: 'p7', title:'Payment Gateway Mock', category:'api', price:'₺19', desc:'Test ve geliştirme için ödeme geçidi simülatörü.', icon:'fa-credit-card-blank', link:'#' },
+      { id: 'p8', title:'Auto-Scaler Script', category:'tool', price:'₺24', desc:'Sunucu kaynaklarını otomatik ölçeklendiren script paketi.', icon:'fa-gears', link:'#' },
+      { id: 'p9', title:'Discord Bot Pack', category:'bot', price:'₺14', desc:'Moderasyon, bildirim ve ödeme botları içeren paket.', icon:'fa-discord', link:'#' },
+      { id: 'p10', title:'SSO Auth Module', category:'api', price:'₺45', desc:'Tek oturum açma çözümü - OAuth2 + SAML destekli.', icon:'fa-user-lock', link:'#' },
+      { id: 'p11', title:'Crypto Wallet Mock', category:'tool', price:'₺34', desc:'Eğitim amaçlı sanal cüzdan ve transfer simülasyonu.', icon:'fa-wallet', link:'#' },
+      { id: 'p12', title:'OTP Service - ZynxOTP', category:'api', price:'₺12', desc:'SMS/Email OTP servisi, düşük gecikme ve yüksek teslimat.', icon:'fa-mobile-screen-button', link:'#' },
+      { id: 'p13', title:'Panel Theme Pack', category:'panel', price:'Ücretsiz', desc:'Hazır panel temaları: dark, neon, minimal.', icon:'fa-paint-roller', link:'#' }
+    ];
+
+    const productGrid = document.getElementById('productGrid');
+    const chips = document.querySelectorAll('.chip');
+    const searchInput = document.getElementById('search');
+
+    // render cards
+    function render(cards){
+      productGrid.innerHTML = '';
+      if(!cards.length){
+        productGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px;color:#8f98a3">Aradığın ürün bulunamadı.</div>';
+        return;
+      }
+      cards.forEach(p=>{
+        const el = document.createElement('article');
+        el.className = 'card fade-in';
+        el.tabIndex = 0;
+        el.setAttribute('role','button');
+        el.setAttribute('aria-label', p.title + ' ürün detayları');
+        el.innerHTML = `
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="icon"><i class="fa-solid ${p.icon}"></i></div>
+            <div>
+              <h3>${p.title}</h3>
+              <p style="margin-top:6px;font-size:0.86rem;color:#aeb7c1">${p.desc.length>80? p.desc.slice(0,78)+'...':p.desc}</p>
+            </div>
+          </div>
+          <div class="meta">
+            <div style="color:#98a3ad;font-size:0.9rem">${p.category.toUpperCase()}</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="font-weight:700;color:#fff">${p.price}</div>
+              <button class="btn primary" data-id="${p.id}">Detay</button>
+            </div>
+          </div>
+        `;
+        // open modal on button or enter key
+        el.querySelector('.btn').addEventListener('click', ()=> openModal(p.id));
+        el.addEventListener('keydown',(e)=>{ if(e.key==='Enter') openModal(p.id) });
+        productGrid.appendChild(el);
+      });
     }
+
+    render(products);
+
+    // filter handlers
+    chips.forEach(c=>{
+      c.addEventListener('click', ()=>{
+        chips.forEach(x=>x.classList.remove('active'));
+        c.classList.add('active');
+        const filter = c.dataset.filter;
+        applyFilters(filter, searchInput.value.trim());
+      });
+    });
+
+    searchInput.addEventListener('input', ()=> {
+      const active = document.querySelector('.chip.active').dataset.filter;
+      applyFilters(active, searchInput.value.trim());
+    });
+
+    function applyFilters(filter, q){
+      let out = [...products];
+      if(filter && filter !== 'all') out = out.filter(p=> p.category === filter);
+      if(q) out = out.filter(p=> (p.title + ' ' + p.desc).toLowerCase().includes(q.toLowerCase()));
+      render(out);
+    }
+
+    // Modal logic
+    const backdrop = document.getElementById('modalBackdrop');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalPrice = document.getElementById('modalPrice');
+    const buyBtn = document.getElementById('buyBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const closeBtn = document.getElementById('closeBtn');
+
+    function openModal(id){
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      modalTitle.textContent = p.title;
+      modalDesc.textContent = p.desc;
+      modalPrice.textContent = 'Fiyat: ' + p.price;
+      modalIcon.innerHTML = `<i class="fa-solid ${p.icon}" style="font-size:40px;color:#051017"></i>`;
+      document.getElementById('modalCategory').textContent = p.category.toUpperCase();
+      document.getElementById('modalType').textContent = 'Tip: Dijital';
+      // buy button - placeholder behavior
+      buyBtn.onclick = ()=> {
+        // demo: aç new tab or start download
+        window.open(p.link || '#', '_blank');
+      };
+      // copy link
+      copyBtn.onclick = async ()=> {
+        const toCopy = location.href.split('#')[0] + '#product=' + encodeURIComponent(p.id);
+        try{
+          await navigator.clipboard.writeText(toCopy);
+          copyBtn.textContent = 'Kopyalandı ✓';
+          setTimeout(()=> copyBtn.innerHTML = '<i class="fa-regular fa-copy" style="margin-right:8px"></i>Linki Kopyala',1200);
+        }catch(e){
+          alert('Kopyalama başarısız. Link: ' + toCopy);
+        }
+      };
+
+      backdrop.classList.add('show');
+      backdrop.setAttribute('aria-hidden','false');
+      // focus trap-ish
+      closeBtn.focus();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(){
+      backdrop.classList.remove('show');
+      backdrop.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', (e)=> { if(e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape') closeModal(); });
+
+    // Support opening modal via hash (#product=p3)
+    function checkHash(){
+      const h = location.hash;
+      if(h.startsWith('#product=')){
+        const id = decodeURIComponent(h.split('=')[1]);
+        openModal(id);
+      }
+    }
+    window.addEventListener('hashchange', checkHash);
+    window.addEventListener('load', checkHash);
+
+    // small UX: animate grid items slightly delayed
+    Array.from(document.querySelectorAll('.fade-in')).forEach((el,i)=>{
+      el.style.animationDelay = (i*60) + 'ms';
+      el.style.animationDuration = '420ms';
+    });
+
   </script>
 </body>
 </html>
